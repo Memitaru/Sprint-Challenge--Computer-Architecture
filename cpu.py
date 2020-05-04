@@ -182,8 +182,14 @@ class CPU:
     def jmp(self, op_a, _): # Jump to the address stored in the given register
         self.pc = self.reg[op_a] # Set PC to the address stored in op_a
 
-    def jeq(self, op_a, op_b):
-        
+    def jeq(self, op_a, _): # If equal flag is 1, jump to address at op a
+        if self.fl[-1] == 1:
+            self.jmp(op_a, _)
+        else:
+            self.pc += 2
     
-    def jne(self, op_a, op_b):
-        pass
+    def jne(self, op_a, _): # If equal flag is 0, jump to address at op a
+        if self.fl[-1] == 0:
+            self.jmp(op_a, _)
+        else:
+            self.pc += 2
