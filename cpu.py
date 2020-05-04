@@ -13,6 +13,7 @@ class CPU:
         self.ram = [0] * 256
         self.pc = 0
         self.reg[7] = 0xF4
+        self.fl = 0b00000000
         self.opcodes = {
             0b00000001: "HLT",
             0b01000111: "PRN",
@@ -22,7 +23,11 @@ class CPU:
             0b01000101: "PUSH",
             0b01000110: "POP",
             0b01010000: "CALL",
-            0b00010001: "RET"
+            0b00010001: "RET",
+            0b10100111: "CMP",
+            0b01010101: "JEQ",
+            0b01010110: "JNE",
+            0b01010100: "JMP"
         }
         self.branchtable = {
             "HLT": self.hlt,
@@ -32,7 +37,7 @@ class CPU:
             "PUSH": self.push,
             "POP": self.pop,
             "CALL": self.call,
-            "RET": self.ret
+            "RET": self.ret,
         }
 
 
@@ -78,6 +83,11 @@ class CPU:
             self.reg[reg_a] += self.reg[reg_b]
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+        elif op == "CMP":
+            if self.reg[reg_a] == self.reg[reg_b]:
+                self.fl[-1] = 1
+            else:
+                self.fl[-1] = 0
         else:
             raise Exception("Unsupported ALU operation")
 
