@@ -13,7 +13,7 @@ class CPU:
         self.ram = [0] * 256
         self.pc = 0
         self.reg[7] = 0xF4
-        self.fl = 0b00000000
+        self.fl = [0] * 8
         self.opcodes = {
             0b00000001: "HLT",
             0b01000111: "PRN",
@@ -38,6 +38,9 @@ class CPU:
             "POP": self.pop,
             "CALL": self.call,
             "RET": self.ret,
+            "JEQ": self.jeq,
+            "JNE": self.jne,
+            "JMP": self.jmp
         }
 
 
@@ -127,7 +130,7 @@ class CPU:
             sets_pc = ((IR >> 4) & 0b001) == 1
             is_alu_op = (IR >> 5) & 0b001 == 1
             opcode = self.opcodes[IR]
-
+            # self.trace()
             if not sets_pc:
                 self.pc += 1 + num_operands
 
@@ -175,3 +178,12 @@ class CPU:
         return_address = self.ram_read(sp)
         
         self.pc = return_address
+
+    def jmp(self, op_a, _): # Jump to the address stored in the given register
+        self.pc = self.reg[op_a] # Set PC to the address stored in op_a
+
+    def jeq(self, op_a, op_b):
+        
+    
+    def jne(self, op_a, op_b):
+        pass
