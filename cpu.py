@@ -98,6 +98,15 @@ class CPU:
                 self.fl[-1] = 1
             else:
                 self.fl[-1] = 0
+        elif op == "AND":
+            self.reg[reg_a] = self.reg[reg_a] & self.reg[reg_b]
+        elif op == "OR":
+            self.reg[reg_a] = self.reg[reg_a] | self.reg[reg_b]
+        elif op == "XOR":
+            self.reg[reg_a] = self.reg[reg_a] ^ self.reg[reg_b]
+        elif op == "NOT":
+            self.reg[reg_a] = self.reg[reg_a] ~ self.reg[reg_b]
+        
         else:
             raise Exception("Unsupported ALU operation")
 
